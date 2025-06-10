@@ -12,18 +12,3 @@ Este proyecto implementa una solución distribuida y concurrente para la predicc
 - Integrar una SPA (Next.js) con una API REST escrita en Go.
 - Desplegar los servicios con **Docker Compose**.
 
----
-
-## 🧠 Tecnologías Utilizadas
-
-| Componente          | Tecnología         |
-|---------------------|--------------------|
-| Backend API         | Go (Golang)        |
-| Modelo ML (prototipo)| Python + Scikit-learn (para reglas de referencia) |
-| Concurrencia        | Go: goroutines + channels |
-| Comunicación        | Redis (buffer de tareas y resultados) |
-| Contenerización     | Docker / Docker Compose |
-| Frontend (fase TF)  | Next.js (SPA)      |
-| Persistencia (fase TF)| MongoDB          |
-
----
