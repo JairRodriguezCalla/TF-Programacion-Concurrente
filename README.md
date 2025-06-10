@@ -1,14 +1,36 @@
-# 🔌 Predicción de Categoría Tarifaria de Suministro Eléctrico
+# ⚡ Predicción Concurrente de Categoría Tarifaria en Go
 
-Este proyecto implementa una solución distribuida y concurrente para la predicción automatizada de la **categoría tarifaria (`COD_TARIFA`)** de los suministros eléctricos en el Perú, utilizando datos oficiales de OSINERGMIN, un modelo de Machine Learning (Random Forest) y tecnologías como **Go, Redis y Docker**.
+Este proyecto forma parte del curso **Programación Concurrente y Distribuida (CC65)** y tiene como objetivo desarrollar un sistema que prediga automáticamente la **categoría tarifaria (`COD_TARIFA`)** de suministros eléctricos utilizando técnicas de **aprendizaje automático (Random Forest)** implementadas en el lenguaje **Go**, con procesamiento concurrente y almacenamiento en memoria mediante **Redis**. El dataset utilizado proviene de **OSINERGMIN**, fuente oficial del gobierno peruano.
 
 ---
 
-## 🎯 Objetivo del Proyecto
+## 📚 Información del curso
 
-- Automatizar la clasificación tarifaria usando aprendizaje automático.
-- Procesar grandes volúmenes de datos (>1 millón de registros) de manera eficiente.
-- Implementar procesamiento concurrente y distribuido con **goroutines**, **channels** y **Redis**.
-- Integrar una SPA (Next.js) con una API REST escrita en Go.
-- Desplegar los servicios con **Docker Compose**.
+- **Curso:** Programación Concurrente y Distribuida (CC65)  
+- **Sección:** 903  
+- **Ciclo:** 2025-1  
+- **Universidad:** Universidad Peruana de Ciencias Aplicadas (UPC)  
+- **Profesor:** Carlos Alberto Jara García
 
+---
+
+## 👨‍💻 Integrantes del equipo
+
+- Jair Rodríguez Calla  
+- Niño Suarez, David Joaquín
+- LlanosLlamoca, Carlos Daniel
+
+
+---
+
+## 📅 Proyecto – Hito 1 (PC3)
+
+Este repositorio corresponde al desarrollo del **Hito 1 (PC3)**, que incluye:
+
+- Revisión bibliográfica y análisis del algoritmo de clasificación.
+- Implementación del modelo de Machine Learning Random Forest traducido a Go.
+- Procesamiento concurrente utilizando `goroutines` y sincronización con `WaitGroup`.
+- Prueba de concepto con Redis para almacenamiento en memoria.
+- Organización y documentación del proyecto mediante GitHub, Kanban y backlog técnico.
+
+---
