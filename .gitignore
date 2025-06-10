@@ -1,6 +1,6 @@
 # Ignorar el dataset grande
 data/facturacion.csv
-
+scripts/rf_model.pkl
 # Archivos de compilación en Go
 *.exe
 *.out
