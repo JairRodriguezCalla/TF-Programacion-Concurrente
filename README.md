@@ -27,6 +27,3 @@ Este proyecto implementa una solución distribuida y concurrente para la predicc
 | Persistencia (fase TF)| MongoDB          |
 
 ---
-
-## 📂 Estructura del Proyecto
-
