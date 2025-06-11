@@ -34,3 +34,6 @@ Este repositorio corresponde al desarrollo del **Hito 1 (PC3)**, que incluye:
 - Organización y documentación del proyecto mediante GitHub, Kanban y backlog técnico.
 
 ---
+## Dataset Documentación y Repositorio
+
+- [Dataset Completo] https://1drv.ms/f/c/38d057549b7dc0d4/Et_c1jXPOptDq6637BDc7mwBZVeHM-6QN1QKk1gsUb4xQA?e=gZTU4B
