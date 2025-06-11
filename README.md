@@ -18,7 +18,7 @@ Este proyecto forma parte del curso **Programación Concurrente y Distribuida (C
 
 - Jair Rodríguez Calla  
 - Niño Suarez, David Joaquín
-- LlanosLlamoca, Carlos Daniel
+- Llanos Llamoca, Carlos Daniel
 
 
 ---
