@@ -1,4 +1,4 @@
-package main
+package rf
 
 import (
 	"encoding/csv"
@@ -116,14 +116,11 @@ func predictTree3(consumo float64, uso int, grupo int, empresa int) int {
 	}
 }
 
-func predict(consumo float64, uso int, grupo int, empresa int) int {
+func Predict(consumo float64, uso int, grupo int, empresa int) int {
 	votes := make(map[int]int)
-	result1 := predictTree1(consumo, uso, grupo, empresa)
-	result2 := predictTree2(consumo, uso, grupo, empresa)
-	result3 := predictTree3(consumo, uso, grupo, empresa)
-	votes[result1]++
-	votes[result2]++
-	votes[result3]++
+	votes[predictTree1(consumo, uso, grupo, empresa)]++
+	votes[predictTree2(consumo, uso, grupo, empresa)]++
+	votes[predictTree3(consumo, uso, grupo, empresa)]++
 
 	maxVotes := 0
 	predicted := -1
@@ -136,7 +133,7 @@ func predict(consumo float64, uso int, grupo int, empresa int) int {
 	return predicted
 }
 
-func processRow(row []string, wg *sync.WaitGroup) {
+func ProcessRow(row []string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	if len(row) < 8 {
 		return
@@ -145,10 +142,9 @@ func processRow(row []string, wg *sync.WaitGroup) {
 	uso, _ := strconv.Atoi(row[5])
 	grupo, _ := strconv.Atoi(row[6])
 	empresa, _ := strconv.Atoi(row[7])
-
-	prediccion := predict(consumo, uso, grupo, empresa)
-	fmt.Printf("➡️  Registro procesado: consumo=%.2f, uso=%d, grupo=%d, empresa=%d => Predicción: %d\n",
-		consumo, uso, grupo, empresa, prediccion)
+	pred := Predict(consumo, uso, grupo, empresa)
+	fmt.Printf("📊 consumo=%.2f, uso=%d, grupo=%d, empresa=%d → Predicción: %d\n",
+		consumo, uso, grupo, empresa, pred)
 }
 
 func main() {
@@ -170,7 +166,7 @@ func main() {
 			continue // saltar cabecera
 		}
 		wg.Add(1)
-		go processRow(row, &wg)
+		go ProcessRow(row, &wg)
 	}
 	wg.Wait()
 	fmt.Println("✅ Procesamiento concurrente finalizado.")
