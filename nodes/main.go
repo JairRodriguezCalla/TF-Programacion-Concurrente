@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"nodes/rf"
+	"tf/nodes/rf"
 )
 
 func main() {
