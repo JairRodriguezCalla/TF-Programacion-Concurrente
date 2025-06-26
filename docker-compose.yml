@@ -1,0 +1,93 @@
+version: "3.9"
+
+services:
+  # ---------- REDIS ----------
+  redis:
+    image: redis:7-alpine
+    container_name: redis-local
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.10
+    ports:
+      - "6379:6379"
+
+  # ---------- WORKERS ----------
+  worker1:
+    build:
+      context: .                                 # 👈 raíz del proyecto (donde está go.mod y go.sum)
+      dockerfile: docker/worker/Dockerfile
+    container_name: worker1
+    environment:
+      - WORKERS=1
+      - DELAY_MS=1
+      - REDIS_ADDR=redis:6379
+    depends_on: [redis]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.21
+
+  worker2:
+    build:
+      context: .
+      dockerfile: docker/worker/Dockerfile
+    container_name: worker2
+    environment:
+      - WORKERS=1
+      - DELAY_MS=1
+      - REDIS_ADDR=redis:6379
+    depends_on: [redis]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.22
+
+  worker3:
+    build:
+      context: .
+      dockerfile: docker/worker/Dockerfile
+    container_name: worker3
+    environment:
+      - WORKERS=1
+      - DELAY_MS=1
+      - REDIS_ADDR=redis:6379
+    depends_on: [redis]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.23
+
+  # ---------- PUSHER ----------
+  pushjob:
+    build:
+      context: .
+      dockerfile: docker/push_job/Dockerfile
+    container_name: pushjob
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on: [redis, worker1, worker2, worker3]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.30
+    restart: "no"
+
+  # ---------- COLLECTOR ----------
+  collector:
+    build:
+      context: .
+      dockerfile: docker/collector/Dockerfile
+    container_name: collector
+    environment:
+      - REDIS_ADDR=redis:6379
+      - CANTIDAD=10
+    volumes:
+      - ./results:/app/results
+    depends_on: [redis, worker1, worker2, worker3]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.40
+    restart: "no"
+
+networks:
+  p2pnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24

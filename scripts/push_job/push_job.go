@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -18,10 +19,13 @@ type Job struct {
 }
 
 func main() {
-	rdb := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-	})
+	// ► Lee REDIS_ADDR (ej. "redis:6379"); fallback a localhost fuera de Docker
+	addr := os.Getenv("REDIS_ADDR")
+	if addr == "" {
+		addr = "localhost:6379"
+	}
 
+	rdb := redis.NewClient(&redis.Options{Addr: addr})
 	ctx := context.Background()
 
 	for i := 1; i <= 10; i++ {

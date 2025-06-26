@@ -12,19 +12,21 @@ import (
 )
 
 type Resultado struct {
-	Tarifa  string // se leerá como string desde el hash
+	Tarifa  string
 	Latency string
 	Worker  string
 }
 
 func main() {
-	// 1. Conexión a Redis ---------------------------------------------
-	rdb := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-	})
+	// ► Lee REDIS_ADDR; fallback a localhost fuera de Docker
+	addr := os.Getenv("REDIS_ADDR")
+	if addr == "" {
+		addr = "localhost:6379"
+	}
+	rdb := redis.NewClient(&redis.Options{Addr: addr})
 	ctx := context.Background()
 
-	const cantidad = 10 // número de jobs enviados con push_job.go
+	const cantidad = 10
 	fmt.Printf("⌛ Esperando %d resultados...\n", cantidad)
 
 	var resultados []Resultado
@@ -34,51 +36,43 @@ func main() {
 		clave := fmt.Sprintf("tarifa:result:job%d", i)
 
 		for {
-			// Verificamos si la clave existe
 			ex, err := rdb.Exists(ctx, clave).Result()
 			if err != nil {
 				log.Fatal(err)
 			}
 			if ex == 0 {
-				time.Sleep(80 * time.Millisecond) // aún no procesado
+				time.Sleep(80 * time.Millisecond)
 				continue
 			}
 
-			// Recuperamos el hash completo
 			val, err := rdb.HGetAll(ctx, clave).Result()
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			// Aseguramos que tenga los campos esperados
 			if len(val) == 0 {
 				time.Sleep(40 * time.Millisecond)
 				continue
 			}
 
-			res := Resultado{
+			resultados = append(resultados, Resultado{
 				Tarifa:  val["tarifa"],
 				Latency: val["latency_ns"],
 				Worker:  val["worker_id"],
-			}
-			resultados = append(resultados, res)
+			})
 			break
 		}
 	}
 
-	duracion := time.Since(inicio)
-	fmt.Printf("🎯 Todos los resultados listos en %.2f s\n", duracion.Seconds())
+	fmt.Printf("🎯 Todos los resultados listos en %.2f s\n", time.Since(inicio).Seconds())
 
-	// 2. Mostrar en consola -------------------------------------------
+	// Mostrar en consola
 	for i, res := range resultados {
 		fmt.Printf("➜ job%02d  tarifa=%s  latency=%s ns  worker=%s\n",
 			i+1, res.Tarifa, res.Latency, res.Worker)
 	}
 
-	// 3. Guardar en CSV -----------------------------------------------
-	// crea carpeta results si no existe
+	// Guardar en CSV
 	_ = os.MkdirAll("results", 0o755)
-
 	f, err := os.Create("results/resultados.csv")
 	if err != nil {
 		log.Fatal(err)
