@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -13,6 +14,7 @@ import (
 
 	"tf/nodes/rf"
 	"tf/pkg/redisconn"
+	"tf/pkg/tarifastats"
 )
 
 // ------------ estructura del Job ------------
@@ -27,6 +29,11 @@ type Job struct {
 // ------------ worker individual ------------
 func worker(id int, ctx context.Context, wg *sync.WaitGroup) {
 	defer wg.Done()
+
+	workerName := os.Getenv("WORKER_ID")
+	if workerName == "" {
+		workerName = fmt.Sprintf("G%d", id)
+	}
 
 	rdb := redisconn.Client
 	baseCtx := redisconn.Ctx // contexto base para Redis
@@ -59,7 +66,7 @@ func worker(id int, ctx context.Context, wg *sync.WaitGroup) {
 			if err := rdb.HSet(baseCtx, key, map[string]interface{}{
 				"tarifa":      tarifa,
 				"latency_ns":  elapsed,
-				"worker_id":   id,
+				"worker_id":   workerName,
 				"finished_at": time.Now().Unix(),
 			}).Err(); err != nil {
 				log.Printf("[W%d] ⚠️  Error guardando resultado: %v", id, err)
@@ -67,7 +74,10 @@ func worker(id int, ctx context.Context, wg *sync.WaitGroup) {
 			}
 			rdb.Expire(baseCtx, key, time.Hour)
 
-			log.Printf("[W%d] ✅ Job %s → tarifa=%d (%d ns)", id, job.ID, tarifa, elapsed)
+			// --- 🆕 Actualización dinámica de estadísticas ---
+			tarifastats.Increment(rdb, baseCtx, tarifa)
+
+			log.Printf("[%s] ✅ Job %s → tarifa=%d (%d ns)", workerName, job.ID, tarifa, elapsed)
 		}
 	}
 }

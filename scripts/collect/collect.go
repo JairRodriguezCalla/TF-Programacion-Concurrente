@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -26,7 +27,12 @@ func main() {
 	rdb := redis.NewClient(&redis.Options{Addr: addr})
 	ctx := context.Background()
 
-	const cantidad = 10
+	cantidad := 10
+	if val := os.Getenv("CANTIDAD"); val != "" {
+		if n, err := strconv.Atoi(val); err == nil && n > 0 {
+			cantidad = n
+		}
+	}
 	fmt.Printf("⌛ Esperando %d resultados...\n", cantidad)
 
 	var resultados []Resultado

@@ -9,5 +9,5 @@ FROM alpine:3.19
 WORKDIR /app
 COPY --from=build /app/collector /app/collector
 ENV REDIS_ADDR=redis:6379
-VOLUME ["/results"]                    # CSV saldrá aquí
+VOLUME ["/results"]
 CMD ["./collector"]

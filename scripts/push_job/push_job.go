@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -19,16 +20,24 @@ type Job struct {
 }
 
 func main() {
-	// ► Lee REDIS_ADDR (ej. "redis:6379"); fallback a localhost fuera de Docker
+	// ► REDIS_ADDR (p.e. "redis:6379"); por defecto localhost
 	addr := os.Getenv("REDIS_ADDR")
 	if addr == "" {
 		addr = "localhost:6379"
 	}
 
+	// ► CANTIDAD de jobs ─ lee variable de entorno; default 10
+	numJobs := 10
+	if s := os.Getenv("CANTIDAD"); s != "" {
+		if n, err := strconv.Atoi(s); err == nil && n > 0 {
+			numJobs = n
+		}
+	}
+
 	rdb := redis.NewClient(&redis.Options{Addr: addr})
 	ctx := context.Background()
 
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= numJobs; i++ {
 		job := Job{
 			ID:      fmt.Sprintf("job%d", i),
 			Consumo: float64(100 + i*10),
