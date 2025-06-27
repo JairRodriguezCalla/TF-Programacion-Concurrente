@@ -88,10 +88,26 @@ services:
       p2pnet:
         ipv4_address: 172.25.0.40
     restart: "no"
-
+    # ---------- API ----------
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: api
+    environment:
+      - REDIS_ADDR=redis:6379
+      - PORT=8080
+    depends_on: [redis]
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.50
+    ports:
+      - "8080:8080"
+    restart: "no"
 networks:
   p2pnet:
     driver: bridge
     ipam:
       config:
         - subnet: 172.25.0.0/24
+

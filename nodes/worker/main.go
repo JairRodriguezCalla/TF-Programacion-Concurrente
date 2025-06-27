@@ -75,7 +75,10 @@ func worker(id int, ctx context.Context, wg *sync.WaitGroup) {
 			rdb.Expire(baseCtx, key, time.Hour)
 
 			// --- 🆕 Actualización dinámica de estadísticas ---
-			tarifastats.Increment(rdb, baseCtx, tarifa)
+			// --- Actualización dinámica de estadísticas ---
+			tarifastats.IncrementTarifa(rdb, baseCtx, tarifa)
+			tarifastats.IncrementWorker(rdb, baseCtx, workerName)
+			tarifastats.IncrementTotals(rdb, baseCtx, elapsed)
 
 			log.Printf("[%s] ✅ Job %s → tarifa=%d (%d ns)", workerName, job.ID, tarifa, elapsed)
 		}
