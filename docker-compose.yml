@@ -11,17 +11,29 @@ services:
     ports:
       - "6379:6379"
 
+  # ---------- MONGODB ----------
+  mongo:
+    image: mongo:6-jammy # Usamos una imagen oficial de MongoDB
+    container_name: mongo-db
+    networks:
+      p2pnet:
+        ipv4_address: 172.25.0.60 # IP fija para MongoDB
+    ports:
+      - "27017:27017" # Puerto por defecto de MongoDB
+    volumes:
+      - mongo_data:/data/db # Persistencia de datos para MongoDB
+
   # ---------- WORKERS ----------
   worker1:
     build:
-      context: .                                 # 👈 raíz del proyecto (donde está go.mod y go.sum)
+      context: .
       dockerfile: docker/worker/Dockerfile
     container_name: worker1
     environment:
       - WORKERS=1
       - DELAY_MS=1
       - REDIS_ADDR=redis:6379
-      - WORKER_ID=W1  
+      - WORKER_ID=W1
     depends_on: [redis]
     networks:
       p2pnet:
@@ -36,7 +48,7 @@ services:
       - WORKERS=1
       - DELAY_MS=1
       - REDIS_ADDR=redis:6379
-      - WORKER_ID=W2 
+      - WORKER_ID=W2
     depends_on: [redis]
     networks:
       p2pnet:
@@ -88,7 +100,8 @@ services:
       p2pnet:
         ipv4_address: 172.25.0.40
     restart: "no"
-    # ---------- API ----------
+
+  # ---------- API ----------
   api:
     build:
       context: .
@@ -96,14 +109,16 @@ services:
     container_name: api
     environment:
       - REDIS_ADDR=redis:6379
+      - MONGO_URI=mongodb://mongo:27017 # Variable de entorno para la URI de Mongo
       - PORT=8080
-    depends_on: [redis]
+    depends_on: [redis, mongo] # Ahora también depende de MongoDB
     networks:
       p2pnet:
         ipv4_address: 172.25.0.50
     ports:
       - "8080:8080"
     restart: "no"
+
 networks:
   p2pnet:
     driver: bridge
@@ -111,3 +126,5 @@ networks:
       config:
         - subnet: 172.25.0.0/24
 
+volumes:
+  mongo_data: # Define un volumen para la persistencia de datos de MongoDB
