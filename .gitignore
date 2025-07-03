@@ -19,7 +19,7 @@ scripts/rf_model.pkl
 .env
 .env.*
 
-# Python (si usas scikit-learn en rf_reference.py)
+# Python
 __pycache__/
 *.pyc
 
@@ -27,7 +27,7 @@ __pycache__/
 *.pid
 docker-compose.override.yml
 
-# Node.js (si llegas a usar Next.js en TF final)
+# Node.js
 node_modules/
 .next/
 dist/
