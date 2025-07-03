@@ -1,0 +1,125 @@
+/* tf-frontend/app/globals.css */
+
+/* Reseteo básico y fuente */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6; /* Un gris muy claro para el fondo */
+  color: #333;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Contenedor principal de la aplicación */
+.container {
+  max-width: 500px;
+  margin: 40px auto; /* Centra el contenedor y le da margen superior */
+  padding: 30px;
+  background-color: #ffffff; /* Fondo blanco para el recuadro */
+  border-radius: 10px; /* Bordes ligeramente redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Título principal */
+.title {
+  text-align: center;
+  color: #2c3e50; /* Azul oscuro */
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+/* Grupos de formulario (label + input) */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #34495e; /* Un gris-azul */
+}
+
+.form-input {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 12px 15px;
+  border: 1px solid #dcdcdc; /* Borde gris claro */
+  border-radius: 6px;
+  font-size: 1em;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3498db; /* Borde azul al enfocar */
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Sombra azul suave al enfocar */
+}
+
+/* Botón de predicción */
+.predict-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #3498db; /* Azul vibrante */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.predict-button:hover:not(:disabled) {
+  background-color: #2980b9; /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-1px); /* Ligero efecto de elevación */
+}
+
+.predict-button:disabled {
+  background-color: #cccccc; /* Gris claro cuando está deshabilitado */
+  cursor: not-allowed;
+}
+
+/* Sección de resultados de predicción */
+.prediction-result {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #e8f5e9; /* Verde muy claro */
+  border: 1px solid #4caf50; /* Borde verde */
+  border-radius: 8px;
+  text-align: center;
+}
+
+.prediction-title {
+  color: #2e7d32; /* Verde oscuro */
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.prediction-text {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #1b5e20; /* Verde muy oscuro */
+}
+
+/* Mensajes de error */
+.error-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #ffebee; /* Rojo muy claro */
+  border: 1px solid #e57373; /* Borde rojo */
+  border-radius: 8px;
+  color: #c62828; /* Rojo oscuro */
+  font-weight: bold;
+  text-align: center;
+}
