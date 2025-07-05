@@ -47,6 +47,16 @@ En esta etapa se amplió el sistema con capacidades distribuidas:
 
 ---
 
+## 📦 Proyecto – Trabajo Final (TF)
+
+En esta etapa se amplió el sistema con capacidades distribuidas:
+
+- Implementación de un sistema de predicción en tiempo real con arquitectura en capas: SPA → API → Redis → Workers → MongoDB.
+- Diseño y despliegue de una interfaz web tipo SPA construida en Next.js, que permite al usuario ingresar los parámetros (Consumo, Uso, Grupo, Empresa) y obtener la categoría tarifaria correspondiente.
+- Integración de MongoDB contenerizado para almacenar registros completos de cada predicción, incluyendo latencia, worker utilizado y marca de tiempo.
+
+---
+
 ## Dataset Documentación y Repositorio
 
 - [Dataset Completo] https://1drv.ms/f/c/38d057549b7dc0d4/Et_c1jXPOptDq6637BDc7mwBZVeHM-6QN1QKk1gsUb4xQA?e=gZTU4B
